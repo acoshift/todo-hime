@@ -51,7 +51,7 @@ func ListTodos(q Queryer) ([]*entity.Todo, error) {
 	if err != nil {
 		return nil, err
 	}
-
+	defer rows.Close()
 	xs := make([]*entity.Todo, 0)
 	for rows.Next() {
 		var x entity.Todo
