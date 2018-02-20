@@ -1,0 +1,50 @@
+{{define "page.title"}}Index - Todo Hime{{end}}
+
+{{define "content"}}
+<a href="{{route "create"}}">Create new Todo</a>
+<div>
+  <table>
+    <thead>
+      <tr>
+        <th>Done</th>
+        <th>Content</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{range .List}}
+      <tr>
+        <td>{{if .Done}}*{{end}}</td>
+        <td>{{.Content}}</td>
+        <td>
+          {{if not .Done}}
+          <form method="POST" action="{{route "done"}}">
+            <input type="hidden" name="id" value="{{.ID}}">
+            <button>Done</button>
+          </form>
+          {{end}}
+          <form method="POST" action="{{route "remove"}}">
+            <input type="hidden" name="id" value="{{.ID}}">
+            <button>Remove</button>
+          </form>
+        </td>
+      </tr>
+      {{else}}
+      <tr>
+        <td colspan="3">No Todo</td>
+      </tr>
+      {{end}}
+    </tbody>
+  </table>
+</div>
+{{end}}
+
+{{define "style"}}{{end}}
+
+{{define "script"}}
+<script>
+  {{if .Flash.Success}}
+  alert({{.Flash.Get "Success"}})
+  {{end}}
+</script>
+{{end}}

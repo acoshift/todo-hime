@@ -1,0 +1,19 @@
+{{define "page.title"}}Create - Todo Hime{{end}}
+
+{{define "content"}}
+<h3>Create new Todo</h3>
+<form method="POST">
+  <input name="content">
+  <button>Create</button>
+</form>
+{{if .Flash.Errors}}
+<ul>
+  {{range .Flash.Errors}}
+  <li>{{.}}</li>
+  {{end}}
+</ul>
+{{end}}
+{{end}}
+
+{{define "style"}}{{end}}
+{{define "script"}}{{end}}
