@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/acoshift/hime"
+
 	"github.com/acoshift/todo-hime/repository"
 )
 
