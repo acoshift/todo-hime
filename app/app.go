@@ -7,7 +7,6 @@ import (
 	"runtime/debug"
 	"time"
 
-	"github.com/acoshift/csrf"
 	"github.com/acoshift/header"
 	"github.com/acoshift/hime"
 	"github.com/acoshift/httprouter"
@@ -18,71 +17,66 @@ import (
 
 // app's global vars
 var (
-	db      *sql.DB
-	loc     *time.Location
-	baseURL string
+	db  *sql.DB
+	loc *time.Location
 )
 
-// New creates new handler factory
-func New(c *Config) hime.HandlerFactory {
-	baseURL = c.BaseURL
+// New creates new handler
+func New(app hime.App, c Config) http.Handler {
 	db = c.DB
 	loc = c.Location
 
-	return func(app hime.App) http.Handler {
-		app.
-			BeforeRender(func(h http.Handler) http.Handler {
-				return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-					// clear flash when render view
-					getSession(r.Context()).Flash().Clear()
+	app.
+		BeforeRender(func(h http.Handler) http.Handler {
+			return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				// clear flash when render view
+				getSession(r.Context()).Flash().Clear()
 
-					w.Header().Set(header.CacheControl, "no-cache, no-store, must-revalidate")
-					h.ServeHTTP(w, r)
-				})
-			}).
-			Component("_layout.tmpl").
-			Template("index", "index.tmpl").
-			Template("create", "create.tmpl").
-			Routes(hime.Routes{
-				"index":  "/",
-				"create": "/create",
-				"done":   "/done",
-				"remove": "/remove",
+				w.Header().Set(header.CacheControl, "no-cache, no-store, must-revalidate")
+				h.ServeHTTP(w, r)
 			})
+		}).
+		Component("_layout.tmpl").
+		Template("index", "index.tmpl").
+		Template("create", "create.tmpl").
+		Routes(hime.Routes{
+			"index":  "/",
+			"create": "/create",
+			"done":   "/done",
+			"remove": "/remove",
+		})
 
-		mux := http.NewServeMux()
-		mux.Handle("/-/", http.StripPrefix("/-", webstatic.New("assets")))
+	mux := http.NewServeMux()
+	mux.Handle("/-/", http.StripPrefix("/-", webstatic.New("assets")))
 
-		r := httprouter.New()
-		r.HandleMethodNotAllowed = false
-		r.HandleOPTIONS = false
-		r.NotFound = hime.H(notFoundHandler)
+	r := httprouter.New()
+	r.HandleMethodNotAllowed = false
+	r.HandleOPTIONS = false
+	r.NotFound = hime.H(notFoundHandler)
 
-		r.Get(app.Route("index"), hime.H(indexGetHandler))
-		r.Get(app.Route("create"), hime.H(createGetHandler))
-		r.Post(app.Route("create"), hime.H(createPostHandler))
-		r.Post(app.Route("done"), hime.H(donePostHandler))
-		r.Post(app.Route("remove"), hime.H(removePostHandler))
+	r.Get(app.Route("index"), hime.H(indexGetHandler))
+	r.Get(app.Route("create"), hime.H(createGetHandler))
+	r.Post(app.Route("create"), hime.H(createPostHandler))
+	r.Post(app.Route("done"), hime.H(donePostHandler))
+	r.Post(app.Route("remove"), hime.H(removePostHandler))
 
-		mux.Handle("/", middleware.Chain(
-			session.Middleware(session.Config{
-				Rolling:  true,
-				Proxy:    true,
-				Secure:   session.PreferSecure,
-				SameSite: session.SameSiteLax,
-				Path:     "/",
-				HTTPOnly: true,
-				MaxAge:   7 * 24 * time.Hour,
-				Store:    c.SessionStore,
-			}),
-		)(r))
+	mux.Handle("/", middleware.Chain(
+		session.Middleware(session.Config{
+			Rolling:  true,
+			Proxy:    true,
+			Secure:   session.PreferSecure,
+			SameSite: session.SameSiteLax,
+			Path:     "/",
+			HTTPOnly: true,
+			MaxAge:   7 * 24 * time.Hour,
+			Store:    c.SessionStore,
+		}),
+	)(r))
 
-		return middleware.Chain(
-			panicRecovery,
-			noCORS,
-			csrf.New(csrf.Config{Origins: []string{baseURL}}),
-		)(mux)
-	}
+	return middleware.Chain(
+		panicRecovery,
+		noCORS,
+	)(mux)
 }
 
 func cacheHeader(h http.Handler) http.Handler {

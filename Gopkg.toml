@@ -4,15 +4,11 @@
 
 [[constraint]]
   branch = "master"
-  name = "github.com/acoshift/csrf"
-
-[[constraint]]
-  branch = "master"
   name = "github.com/acoshift/header"
 
 [[constraint]]
   name = "github.com/acoshift/hime"
-  version = "0.0.15"
+  version = "0.1.0"
 
 [[constraint]]
   name = "github.com/acoshift/httprouter"

@@ -42,8 +42,8 @@ type App interface {
 	// Minify enables minify when render html, css, js
 	Minify() App
 
-	// Handler sets the handler factory
-	Handler(factory HandlerFactory) App
+	// Handler sets the handler
+	Handler(h http.Handler) App
 
 	// Routes registers route name and path
 	Routes(routes Routes) App
@@ -51,12 +51,12 @@ type App interface {
 	// Globals registers global constants
 	Globals(Globals) App
 
+	// Server overrides server when calling ListenAndServe
+	Server(server *http.Server) App
+
 	// GracefulShutdown runs server as graceful shutdown,
 	// can works only when start server with app.ListenAndServe
-	GracefulShutdown() App
-
-	// ShutdownTimeout sets graceful shutdown timeout
-	ShutdownTimeout(d time.Duration) App
+	GracefulShutdown() GracefulShutdownApp
 
 	// ListenAndServe starts web server
 	ListenAndServe(addr string) error
@@ -68,41 +68,44 @@ type App interface {
 	Global(key interface{}) interface{}
 }
 
+// GracefulShutdownApp is the app in graceful shutdown mode
+type GracefulShutdownApp interface {
+	// Timeout sets timeout
+	Timeout(d time.Duration) GracefulShutdownApp
+
+	// Wait sets wait time before shutdown
+	Wait(d time.Duration) GracefulShutdownApp
+
+	// Notify calls fn when receive terminate signal from os
+	Notify(fn func()) GracefulShutdownApp
+
+	// Before runs fn before start waiting to SIGTERM
+	Before(fn func()) GracefulShutdownApp
+
+	// ListenAndServe starts web server
+	ListenAndServe(addr string) error
+}
+
 // Routes is the map for route name => path
 type Routes map[string]string
 
 // Globals is the global const map
 type Globals map[interface{}]interface{}
 
-// HandlerFactory is the function for create router
-type HandlerFactory func(App) http.Handler
-
-// Factory wraps http.Handler with HandlerFactory
-func Factory(h http.Handler) HandlerFactory {
-	return func(_ App) http.Handler {
-		return h
-	}
-}
-
 // Handler is the hime handler
 type Handler func(Context) Result
 
 // Result is the handler result
-type Result interface {
-	Response(w http.ResponseWriter, r *http.Request)
-}
-
-// ResultFunc is the result function
-type ResultFunc func(w http.ResponseWriter, r *http.Request)
-
-// Response implements Result interface
-func (f ResultFunc) Response(w http.ResponseWriter, r *http.Request) {
-	f(w, r)
-}
+type Result http.Handler
 
 // Context is the hime context
 type Context interface {
 	context.Context
+
+	WithContext(ctx context.Context)
+	WithRequest(r *http.Request)
+	WithResponseWriter(w http.ResponseWriter)
+	WithValue(key interface{}, val interface{})
 
 	// App data
 
@@ -128,12 +131,37 @@ type Context interface {
 	ParseMultipartForm(maxMemory int64) error
 	Form() url.Values
 	PostForm() url.Values
+
+	// FromValue functions
 	FormValue(key string) string
+	FormValueTrimSpace(key string) string
+	FormValueTrimSpaceComma(key string) string
+	FormValueInt(key string) int
+	FormValueInt64(key string) int64
+	FormValueFloat32(key string) float32
+	FormValueFloat64(key string) float64
+
 	PostFormValue(key string) string
+	PostFormValueTrimSpace(key string) string
+	PostFormValueTrimSpaceComma(key string) string
+	PostFormValueInt(key string) int
+	PostFormValueInt64(key string) int64
+	PostFormValueFloat32(key string) float32
+	PostFormValueFloat64(key string) float64
+
 	FormFile(key string) (multipart.File, *multipart.FileHeader, error)
+
+	// FormFileNotEmpty calls r.FormFile but return http.ErrMissingFile if file empty
+	FormFileNotEmpty(key string) (multipart.File, *multipart.FileHeader, error)
+
 	MultipartForm() *multipart.Form
 	MultipartReader() (*multipart.Reader, error)
 	Method() string
+
+	// Query returns ctx.Request().URL.Query()
+	Query() url.Values
+
+	Param(name string, value interface{}) *Param
 
 	// Results
 
@@ -151,6 +179,16 @@ type Context interface {
 
 	// RedirectToGet redirects to GET method with See Other status code on the current path
 	RedirectToGet() Result
+
+	// RedirectBack redirects back to previous URL
+	RedirectBack(fallback string) Result
+
+	// RedirectBackToGet redirects back to GET method with See Other status code to previous URL
+	// or fallback to same URL like RedirectToGet
+	RedirectBackToGet() Result
+
+	// SafeRedirectBack redirects back to previous URL using SafeRedirect
+	SafeRedirectBack(fallback string) Result
 
 	// Error wraps http.Error
 	Error(error string) Result
@@ -181,7 +219,15 @@ type Context interface {
 
 	// File renders file
 	File(name string) Result
-
-	// Handle wrap h with Result
-	Handle(h http.Handler) Result
 }
+
+// Param is the query param when redirect
+type Param struct {
+	Name  string
+	Value interface{}
+}
+
+var (
+	_ = App(&app{})
+	_ = Context(&appContext{})
+)

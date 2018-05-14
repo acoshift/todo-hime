@@ -28,7 +28,6 @@ func main() {
 	}
 
 	sessionHost := config.String("session_host")
-
 	sessionStore := redisstore.New(redisstore.Config{
 		Prefix: config.String("session_prefix"),
 		Pool: &redis.Pool{
@@ -38,18 +37,17 @@ func main() {
 		},
 	})
 
-	app := app.New(&app.Config{
-		BaseURL:      config.String("base_url"),
-		DB:           db,
-		Location:     loc,
-		SessionStore: sessionStore,
-	})
+	himeApp := hime.New()
 
-	err = hime.New().
+	err = himeApp.
 		TemplateDir("template").
 		TemplateRoot("root").
 		Minify().
-		Handler(app).
+		Handler(app.New(himeApp, app.Config{
+			DB:           db,
+			Location:     loc,
+			SessionStore: sessionStore,
+		})).
 		GracefulShutdown().
 		ListenAndServe(":8080")
 	if err != nil {
