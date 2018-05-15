@@ -5,7 +5,7 @@ import (
 	"encoding/gob"
 	"time"
 
-	"github.com/garyburd/redigo/redis"
+	"github.com/gomodule/redigo/redis"
 
 	"github.com/acoshift/session"
 )
@@ -36,6 +36,9 @@ func (s *redisStore) Get(key string, opt session.StoreOption) (session.Data, err
 		c.Do("EXPIRE", s.prefix+key, int64(opt.TTL/time.Second))
 	}
 	c.Close()
+	if err == redis.ErrNil {
+		return nil, session.ErrNotFound
+	}
 	if err != nil {
 		return nil, err
 	}

@@ -3,9 +3,12 @@
 
 [[projects]]
   name = "github.com/acoshift/configfile"
-  packages = ["."]
-  revision = "2c3aa5321b8695857ce46359da075e5cd2c050f5"
-  version = "v1.1.0"
+  packages = [
+    ".",
+    "internal/reader"
+  ]
+  revision = "203dea81379c18d63418e4b2f97acc03eca7b2b7"
+  version = "v1.2.0"
 
 [[projects]]
   name = "github.com/acoshift/flash"
@@ -22,8 +25,8 @@
 [[projects]]
   name = "github.com/acoshift/hime"
   packages = ["."]
-  revision = "e3eda3592790cd6888a3f6cfc133329b4fdffad4"
-  version = "v0.1.0"
+  revision = "3cf6106b12451093d1aa970c75abfa37d85d1405"
+  version = "v0.3.0"
 
 [[projects]]
   name = "github.com/acoshift/httprouter"
@@ -43,23 +46,23 @@
     ".",
     "store/redis"
   ]
-  revision = "73d03b64ce7ae0c68b36cace99ac6ca0e5e99450"
-  version = "v0.6.0"
+  revision = "fcedde64c281438580af916e3e09884e17a1495a"
+  version = "v0.9.0"
 
 [[projects]]
   name = "github.com/acoshift/webstatic"
   packages = ["."]
-  revision = "81f1897e65a6ba4534d8110692e5fca853027af7"
-  version = "v1.0.0"
+  revision = "88484c5af8505ca5dadc7db1a0cf0cf42e90b5dc"
+  version = "v2.0.0"
 
 [[projects]]
-  name = "github.com/garyburd/redigo"
+  name = "github.com/gomodule/redigo"
   packages = [
     "internal",
     "redis"
   ]
-  revision = "d1ed5c67e5794de818ea85e6b522fda02623a484"
-  version = "v1.5.0"
+  revision = "9c11da706d9b7902c6da69c592f75637793fe121"
+  version = "v2.0.0"
 
 [[projects]]
   branch = "master"
@@ -94,9 +97,15 @@
   revision = "639f6272aec6b52094db77b9ec488214b0b4b1a1"
   version = "v2.3.2"
 
+[[projects]]
+  name = "gopkg.in/yaml.v2"
+  packages = ["."]
+  revision = "5420a8b6744d3b0345ab293f6fcba19c978f1183"
+  version = "v2.2.1"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "6d638b3ecbb22f0a4d3dbce3358ed4973466c1716732677ea651ac5c5a216f74"
+  inputs-digest = "4cfddd1a92c2f470505fa976aa65b015dbbd0647f372c8e58955d78383c31d7f"
   solver-name = "gps-cdcl"
   solver-version = 1

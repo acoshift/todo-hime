@@ -11,5 +11,7 @@ const (
 )
 
 func getSession(ctx context.Context) *session.Session {
-	return session.Get(ctx, sessName)
+	sess, err := session.Get(ctx, sessName)
+	must(err)
+	return sess
 }

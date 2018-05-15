@@ -8,7 +8,7 @@ import (
 	"github.com/acoshift/configfile"
 	"github.com/acoshift/hime"
 	redisstore "github.com/acoshift/session/store/redis"
-	"github.com/garyburd/redigo/redis"
+	"github.com/gomodule/redigo/redis"
 	_ "github.com/lib/pq"
 
 	"github.com/acoshift/todo-hime/app"
@@ -39,10 +39,15 @@ func main() {
 
 	himeApp := hime.New()
 
+	himeApp.Template().
+		Dir("template").
+		Root("root").
+		Component("_layout.tmpl").
+		Parse("index", "index.tmpl").
+		Parse("create", "create.tmpl").
+		Minify()
+
 	err = himeApp.
-		TemplateDir("template").
-		TemplateRoot("root").
-		Minify().
 		Handler(app.New(himeApp, app.Config{
 			DB:           db,
 			Location:     loc,

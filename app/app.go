@@ -22,7 +22,7 @@ var (
 )
 
 // New creates new handler
-func New(app hime.App, c Config) http.Handler {
+func New(app *hime.App, c Config) http.Handler {
 	db = c.DB
 	loc = c.Location
 
@@ -36,9 +36,6 @@ func New(app hime.App, c Config) http.Handler {
 				h.ServeHTTP(w, r)
 			})
 		}).
-		Component("_layout.tmpl").
-		Template("index", "index.tmpl").
-		Template("create", "create.tmpl").
 		Routes(hime.Routes{
 			"index":  "/",
 			"create": "/create",
@@ -47,7 +44,7 @@ func New(app hime.App, c Config) http.Handler {
 		})
 
 	mux := http.NewServeMux()
-	mux.Handle("/-/", http.StripPrefix("/-", webstatic.New("assets")))
+	mux.Handle("/-/", http.StripPrefix("/-", webstatic.NewDir("assets")))
 
 	r := httprouter.New()
 	r.HandleMethodNotAllowed = false

@@ -3,6 +3,7 @@ package hime
 import (
 	"context"
 	"net/http"
+	"time"
 )
 
 // NewContext creates new hime's context
@@ -11,25 +12,43 @@ func NewContext(w http.ResponseWriter, r *http.Request) Context {
 }
 
 func newInternalContext(w http.ResponseWriter, r *http.Request) *appContext {
-	app, ok := r.Context().Value(ctxKeyApp).(*app)
+	app, ok := r.Context().Value(ctxKeyApp).(*App)
 	if !ok {
 		panic(ErrAppNotFound)
 	}
 	return newContext(app, w, r)
 }
 
-func newContext(app *app, w http.ResponseWriter, r *http.Request) *appContext {
-	return &appContext{r.Context(), app, r, w, 0}
+func newContext(app *App, w http.ResponseWriter, r *http.Request) *appContext {
+	return &appContext{app, r, w, 0}
 }
 
 type appContext struct {
-	context.Context
-
-	app *app
+	app *App
 	r   *http.Request
 	w   http.ResponseWriter
 
 	code int
+}
+
+// Deadline implements context.Context
+func (ctx *appContext) Deadline() (deadline time.Time, ok bool) {
+	return ctx.r.Context().Deadline()
+}
+
+// Done implements context.Context
+func (ctx *appContext) Done() <-chan struct{} {
+	return ctx.r.Context().Done()
+}
+
+// Err implements context.Context
+func (ctx *appContext) Err() error {
+	return ctx.r.Context().Err()
+}
+
+// Value implements context.Context
+func (ctx *appContext) Value(key interface{}) interface{} {
+	return ctx.r.Context().Value(key)
 }
 
 func (ctx *appContext) WithContext(nctx context.Context) {
