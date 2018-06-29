@@ -1,34 +1,28 @@
 package hime
 
 import (
-	"os"
+	"io/ioutil"
 	"time"
 
 	yaml "gopkg.in/yaml.v2"
 )
 
-// Config is app's config
-type Config struct {
+// AppConfig is hime app's config
+type AppConfig struct {
 	Globals   map[interface{}]interface{} `yaml:"globals" json:"globals"`
 	Routes    map[string]string           `yaml:"routes" json:"routes"`
-	Templates []struct {
-		Dir        string              `yaml:"dir" json:"dir"`
-		Root       string              `yaml:"root" json:"root"`
-		Minify     bool                `yaml:"minify" json:"minify"`
-		Components []string            `yaml:"components" json:"components"`
-		List       map[string][]string `yaml:"list" json:"list"`
-		Delims     []string            `yaml:"delims" json:"delims"`
-	} `yaml:"templates" json:"templates"`
-	Server struct {
+	Templates []TemplateConfig            `yaml:"templates" json:"templates"`
+	Server    struct {
+		Addr              string `yaml:"addr" json:"addr"`
 		ReadTimeout       string `yaml:"readTimeout" json:"readTimeout"`
 		ReadHeaderTimeout string `yaml:"readHeaderTimeout" json:"readHeaderTimeout"`
 		WriteTimeout      string `yaml:"writeTimeout" json:"writeTimeout"`
 		IdleTimeout       string `yaml:"idleTimeout" json:"idleTimeout"`
+		GracefulShutdown  *struct {
+			Timeout string `yaml:"timeout" json:"timeout"`
+			Wait    string `yaml:"wait" json:"wait"`
+		} `yaml:"gracefulShutdown" json:"gracefulShutdown"`
 	} `yaml:"server" json:"server"`
-	Graceful struct {
-		Timeout string `yaml:"timeout" json:"timeout"`
-		Wait    string `yaml:"wait" json:"wait"`
-	} `yaml:"graceful" json:"graceful"`
 }
 
 func parseDuration(s string, t *time.Duration) {
@@ -42,7 +36,7 @@ func parseDuration(s string, t *time.Duration) {
 	}
 }
 
-// Load loads config
+// Config merges config into app's config
 //
 // Example:
 //
@@ -69,55 +63,53 @@ func parseDuration(s string, t *time.Duration) {
 //   readHeaderTimeout: 5s
 //   writeTimeout: 5s
 //   idleTimeout: 30s
-// graceful:
-//   timeout: 1m
-//   wait: 5s
-func (app *App) Load(config Config) *App {
+//   gracefulShutdown:
+//     timeout: 1m
+//     wait: 5s
+func (app *App) Config(config AppConfig) *App {
 	app.Globals(config.Globals)
 	app.Routes(config.Routes)
 
 	for _, cfg := range config.Templates {
-		tp := app.Template()
-		tp.Dir(cfg.Dir)
-		tp.Root(cfg.Root)
-		if len(cfg.Delims) == 2 {
-			tp.Delims(cfg.Delims[0], cfg.Delims[1])
-		}
-		tp.Component(cfg.Components...)
-		for name, filenames := range cfg.List {
-			tp.Parse(name, filenames...)
-		}
-		if cfg.Minify {
-			tp.Minify()
-		}
+		app.Template().Config(cfg)
 	}
 
 	// load server config
+	if config.Server.Addr != "" {
+		app.Addr = config.Server.Addr
+	}
 	parseDuration(config.Server.ReadTimeout, &app.ReadTimeout)
 	parseDuration(config.Server.ReadHeaderTimeout, &app.ReadHeaderTimeout)
 	parseDuration(config.Server.WriteTimeout, &app.WriteTimeout)
 	parseDuration(config.Server.IdleTimeout, &app.IdleTimeout)
 
 	// load graceful config
-	parseDuration(config.Graceful.Timeout, &app.graceful.timeout)
-	parseDuration(config.Graceful.Wait, &app.graceful.wait)
+	if config.Server.GracefulShutdown != nil {
+		if app.gracefulShutdown == nil {
+			app.gracefulShutdown = &gracefulShutdown{}
+		}
+		parseDuration(config.Server.GracefulShutdown.Timeout, &app.gracefulShutdown.timeout)
+		parseDuration(config.Server.GracefulShutdown.Wait, &app.gracefulShutdown.wait)
+	}
 
 	return app
 }
 
-// LoadFromFile loads config from file
-func (app *App) LoadFromFile(filename string) *App {
-	fs, err := os.Open(filename)
+// ParseConfig parses config data
+func (app *App) ParseConfig(data []byte) *App {
+	var config AppConfig
+	err := yaml.Unmarshal(data, &config)
 	if err != nil {
 		panic(err)
 	}
-	defer fs.Close()
+	return app.Config(config)
+}
 
-	var config Config
-	err = yaml.NewDecoder(fs).Decode(&config)
+// ParseConfigFile parses config from file
+func (app *App) ParseConfigFile(filename string) *App {
+	data, err := ioutil.ReadFile(filename)
 	if err != nil {
 		panic(err)
 	}
-
-	return app.Load(config)
+	return app.ParseConfig(data)
 }

@@ -106,7 +106,7 @@ func panicRecovery(h http.Handler) http.Handler {
 	})
 }
 
-func notFoundHandler(ctx hime.Context) hime.Result {
+func notFoundHandler(ctx *hime.Context) hime.Result {
 	return ctx.RedirectTo("index")
 }
 

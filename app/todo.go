@@ -8,11 +8,11 @@ import (
 	"github.com/acoshift/todo-hime/repository"
 )
 
-func createGetHandler(ctx hime.Context) hime.Result {
+func createGetHandler(ctx *hime.Context) hime.Result {
 	return ctx.View("create", page(ctx))
 }
 
-func createPostHandler(ctx hime.Context) hime.Result {
+func createPostHandler(ctx *hime.Context) hime.Result {
 	f := getSession(ctx).Flash()
 
 	content := strings.TrimSpace(ctx.PostFormValue("content"))
@@ -32,7 +32,7 @@ func createPostHandler(ctx hime.Context) hime.Result {
 	return ctx.RedirectTo("index")
 }
 
-func removePostHandler(ctx hime.Context) hime.Result {
+func removePostHandler(ctx *hime.Context) hime.Result {
 	f := getSession(ctx).Flash()
 
 	todoID := strings.TrimSpace(ctx.PostFormValue("id"))
@@ -50,7 +50,7 @@ func removePostHandler(ctx hime.Context) hime.Result {
 	return ctx.RedirectTo("index")
 }
 
-func donePostHandler(ctx hime.Context) hime.Result {
+func donePostHandler(ctx *hime.Context) hime.Result {
 	f := getSession(ctx).Flash()
 
 	todoID := strings.TrimSpace(ctx.PostFormValue("id"))

@@ -53,8 +53,9 @@ func main() {
 			Location:     loc,
 			SessionStore: sessionStore,
 		})).
+		Address(":8080").
 		GracefulShutdown().
-		ListenAndServe(":8080")
+		ListenAndServe()
 	if err != nil {
 		log.Fatal(err)
 	}

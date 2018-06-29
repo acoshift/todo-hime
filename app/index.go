@@ -6,7 +6,7 @@ import (
 	"github.com/acoshift/todo-hime/repository"
 )
 
-func indexGetHandler(ctx hime.Context) hime.Result {
+func indexGetHandler(ctx *hime.Context) hime.Result {
 	list, err := repository.ListTodos(db)
 	must(err)
 
