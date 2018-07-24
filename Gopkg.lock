@@ -25,8 +25,8 @@
 [[projects]]
   name = "github.com/acoshift/hime"
   packages = ["."]
-  revision = "503c45281cba4dfd960198a7f952a2740bffaeec"
-  version = "v0.6.0"
+  revision = "85e9f4f2206379f2e62c3a20e66d47edfd3802ed"
+  version = "v0.7.4"
 
 [[projects]]
   name = "github.com/acoshift/httprouter"
@@ -37,8 +37,8 @@
 [[projects]]
   name = "github.com/acoshift/middleware"
   packages = ["."]
-  revision = "eb528086425529ef1d014404066c11b3bfa15a92"
-  version = "v0.2.0"
+  revision = "3d1c5b32733f1f2cd435fa8fb448c301855f272e"
+  version = "v0.4.1"
 
 [[projects]]
   name = "github.com/acoshift/session"
@@ -63,6 +63,12 @@
   ]
   revision = "9c11da706d9b7902c6da69c592f75637793fe121"
   version = "v2.0.0"
+
+[[projects]]
+  name = "github.com/google/brotli"
+  packages = ["go/cbrotli"]
+  revision = "b601fe817bd3217cb144bbb380a43cae8e847388"
+  version = "v1.0.5"
 
 [[projects]]
   branch = "master"
@@ -106,6 +112,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "d29f33c76996bb1d1f2ff7a5039151ef1f9d469e3eb7fda7be2cb00b9fe892d4"
+  inputs-digest = "a05596cf6981fc2b98895f4ba2fc11eeba3163fa654b7334573e87badae37570"
   solver-name = "gps-cdcl"
   solver-version = 1

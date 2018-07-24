@@ -1,6 +1,10 @@
 {{define "page.title"}}Index - Todo Hime{{end}}
 
 {{define "content"}}
+{{if .Flash.Success}}
+<div>{{.Flash.Get "Success"}}</div>
+{{end}}
+
 <a href="{{route "create"}}">Create new Todo</a>
 <div>
   <table>
@@ -41,10 +45,4 @@
 
 {{define "style"}}{{end}}
 
-{{define "script"}}
-<script>
-  {{if .Flash.Success}}
-  alert({{.Flash.Get "Success"}})
-  {{end}}
-</script>
-{{end}}
+{{define "script"}}{{end}}

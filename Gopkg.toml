@@ -8,7 +8,7 @@
 
 [[constraint]]
   name = "github.com/acoshift/hime"
-  version = "0.6.0"
+  version = "0.7.4"
 
 [[constraint]]
   name = "github.com/acoshift/httprouter"
@@ -16,7 +16,7 @@
 
 [[constraint]]
   name = "github.com/acoshift/middleware"
-  version = "0.2.0"
+  version = "0.4.1"
 
 [[constraint]]
   name = "github.com/acoshift/session"
