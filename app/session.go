@@ -12,6 +12,9 @@ const (
 
 func getSession(ctx context.Context) *session.Session {
 	sess, err := session.Get(ctx, sessName)
-	must(err)
+	if err != nil {
+		panic(err)
+	}
+
 	return sess
 }

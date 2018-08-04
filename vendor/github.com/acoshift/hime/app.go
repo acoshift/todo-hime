@@ -55,8 +55,6 @@ type App struct {
 	templateFuncs []template.FuncMap
 
 	gracefulShutdown *gracefulShutdown
-
-	certFile, keyFile string
 }
 
 var (
@@ -70,6 +68,46 @@ func init() {
 // New creates new app
 func New() *App {
 	return &App{}
+}
+
+// Clone clones app
+func (app *App) Clone() *App {
+	x := &App{
+		Addr:              app.Addr,
+		ReadTimeout:       app.ReadTimeout,
+		ReadHeaderTimeout: app.ReadHeaderTimeout,
+		WriteTimeout:      app.WriteTimeout,
+		IdleTimeout:       app.IdleTimeout,
+		MaxHeaderBytes:    app.MaxHeaderBytes,
+		TLSNextProto:      cloneTLSNextProto(app.TLSNextProto),
+		ConnState:         app.ConnState,
+		ErrorLog:          app.ErrorLog,
+		handler:           app.handler,
+		routes:            cloneRoutes(app.routes),
+		globals:           cloneGlobals(app.globals),
+		beforeRender:      app.beforeRender,
+		template:          cloneTmpl(app.template),
+		templateFuncs:     cloneFuncMaps(app.templateFuncs),
+	}
+	if app.TLSConfig != nil {
+		x.TLSConfig = app.TLSConfig.Clone()
+	}
+	if app.gracefulShutdown != nil {
+		x.gracefulShutdown = &*app.gracefulShutdown
+	}
+	return x
+}
+
+func cloneTLSNextProto(xs map[string]func(*http.Server, *tls.Conn, http.Handler)) map[string]func(*http.Server, *tls.Conn, http.Handler) {
+	if xs == nil {
+		return nil
+	}
+
+	rs := make(map[string]func(*http.Server, *tls.Conn, http.Handler))
+	for k, v := range xs {
+		rs[k] = v
+	}
+	return rs
 }
 
 // Address sets server address
@@ -95,6 +133,11 @@ func (app *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	ctx = context.WithValue(ctx, ctxKeyApp, app)
 	r = r.WithContext(ctx)
+
+	if app.handler == nil {
+		http.DefaultServeMux.ServeHTTP(w, r)
+		return
+	}
 	app.handler.ServeHTTP(w, r)
 }
 
@@ -115,21 +158,15 @@ func (app *App) configServer() {
 func (app *App) listenAndServe() error {
 	app.configServer()
 
+	if app.srv.TLSConfig != nil {
+		return app.srv.ListenAndServeTLS("", "")
+	}
+
 	return app.srv.ListenAndServe()
-}
-
-func (app *App) listenAndServeTLS(certFile, keyFile string) error {
-	app.configServer()
-
-	return app.srv.ListenAndServeTLS(certFile, keyFile)
 }
 
 // ListenAndServe starts web server
 func (app *App) ListenAndServe() error {
-	if app.certFile != "" && app.keyFile != "" {
-		return app.ListenAndServeTLS(app.certFile, app.keyFile)
-	}
-
 	if app.gracefulShutdown != nil {
 		return app.GracefulShutdown().ListenAndServe()
 	}
@@ -137,13 +174,18 @@ func (app *App) ListenAndServe() error {
 	return app.listenAndServe()
 }
 
-// ListenAndServeTLS starts web server in tls mode
-func (app *App) ListenAndServeTLS(certFile, keyFile string) error {
-	if app.gracefulShutdown != nil {
-		return app.GracefulShutdown().ListenAndServeTLS(certFile, keyFile)
+// TLS sets cert and key file
+func (app *App) TLS(certFile, keyFile string) *App {
+	cert, err := tls.LoadX509KeyPair(certFile, keyFile)
+	if err != nil {
+		panic("hime: load key pair error; " + err.Error())
 	}
 
-	return app.listenAndServeTLS(certFile, keyFile)
+	if app.TLSConfig == nil {
+		app.TLSConfig = &tls.Config{}
+	}
+	app.TLSConfig.Certificates = append(app.TLSConfig.Certificates, cert)
+	return app
 }
 
 // GracefulShutdown returns graceful shutdown server

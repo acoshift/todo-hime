@@ -8,11 +8,11 @@ import (
 	"github.com/acoshift/todo-hime/repository"
 )
 
-func createGetHandler(ctx *hime.Context) hime.Result {
+func createGetHandler(ctx *hime.Context) error {
 	return ctx.View("create", page(ctx))
 }
 
-func createPostHandler(ctx *hime.Context) hime.Result {
+func createPostHandler(ctx *hime.Context) error {
 	f := getSession(ctx).Flash()
 
 	content := strings.TrimSpace(ctx.PostFormValue("content"))
@@ -25,14 +25,16 @@ func createPostHandler(ctx *hime.Context) hime.Result {
 	_, err := repository.CreateTodo(db, &repository.CreateTodoModel{
 		Content: content,
 	})
-	must(err)
+	if err != nil {
+		return err
+	}
 
 	f.Set("Success", "todo successfully created")
 
 	return ctx.RedirectTo("index")
 }
 
-func removePostHandler(ctx *hime.Context) hime.Result {
+func removePostHandler(ctx *hime.Context) error {
 	f := getSession(ctx).Flash()
 
 	todoID := strings.TrimSpace(ctx.PostFormValue("id"))
@@ -43,14 +45,16 @@ func removePostHandler(ctx *hime.Context) hime.Result {
 	}
 
 	err := repository.RemoveTodo(db, todoID)
-	must(err)
+	if err != nil {
+		return err
+	}
 
 	f.Set("Success", "Todo successfully removed")
 
 	return ctx.RedirectTo("index")
 }
 
-func donePostHandler(ctx *hime.Context) hime.Result {
+func donePostHandler(ctx *hime.Context) error {
 	f := getSession(ctx).Flash()
 
 	todoID := strings.TrimSpace(ctx.PostFormValue("id"))
@@ -61,7 +65,9 @@ func donePostHandler(ctx *hime.Context) hime.Result {
 	}
 
 	err := repository.SetTodoDone(db, todoID, true)
-	must(err)
+	if err != nil {
+		return err
+	}
 
 	f.Set("Success", "Todo successfully mark as done")
 

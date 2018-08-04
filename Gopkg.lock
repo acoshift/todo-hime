@@ -2,95 +2,120 @@
 
 
 [[projects]]
+  digest = "1:a090449d6bd19b709af070d04419203fda13cdf8bce493d4a09d402d36fb09e8"
   name = "github.com/acoshift/configfile"
   packages = [
     ".",
-    "internal/reader"
+    "internal/reader",
   ]
+  pruneopts = "NUT"
   revision = "203dea81379c18d63418e4b2f97acc03eca7b2b7"
   version = "v1.2.0"
 
 [[projects]]
+  digest = "1:c64498b38799e0267a5a977e36f1469a6868485a7d2e5f19bb5a5d4b56220373"
   name = "github.com/acoshift/flash"
   packages = ["."]
+  pruneopts = "NUT"
   revision = "d8b6eafa9dff18a17ecebe034b6cba0af4fae5bc"
   version = "v0.3.1"
 
 [[projects]]
   branch = "master"
+  digest = "1:8cdb8f46c6cc20473c22c97dbeb17b353308b43be64bc984cf7da3c63a00324e"
   name = "github.com/acoshift/header"
   packages = ["."]
+  pruneopts = "NUT"
   revision = "5c88c77f50897ba89140829b44b9d96c5050ff5a"
 
 [[projects]]
+  digest = "1:7af636e57398d036e705856fba46947400e08276153e180599e98062b958e8d1"
   name = "github.com/acoshift/hime"
   packages = ["."]
-  revision = "85e9f4f2206379f2e62c3a20e66d47edfd3802ed"
-  version = "v0.7.4"
+  pruneopts = "NUT"
+  revision = "6147c88d94223632c03c844ddafaa6c92eead3aa"
+  version = "v0.8.0"
 
 [[projects]]
+  digest = "1:6ebf019b2c57facd2625cf3e3c78733f1de5579b831423c7c170b99dd12bacb4"
   name = "github.com/acoshift/httprouter"
   packages = ["."]
+  pruneopts = "NUT"
   revision = "fecd5a0a4ef0f46879ac1b1f5286156b2fd8b63b"
   version = "v2.1.0"
 
 [[projects]]
+  digest = "1:b6b8140f874b7e4f081a8ec2020b7cafab957d8062080230bd865293b5b520aa"
   name = "github.com/acoshift/middleware"
   packages = ["."]
+  pruneopts = "NUT"
   revision = "3d1c5b32733f1f2cd435fa8fb448c301855f272e"
   version = "v0.4.1"
 
 [[projects]]
+  digest = "1:7cc5867bb7a6509f39adc0538b6af1629f304f140c10c76f5e7cc4f76c55a625"
   name = "github.com/acoshift/session"
   packages = [
     ".",
-    "store/redis"
+    "store/redis",
   ]
+  pruneopts = "NUT"
   revision = "fcedde64c281438580af916e3e09884e17a1495a"
   version = "v0.9.0"
 
 [[projects]]
+  digest = "1:6ecc2fe5af2865d7bbd38f5c4412a58c1767c54909fe879dd9cb28de32dff91d"
   name = "github.com/acoshift/webstatic"
   packages = ["."]
+  pruneopts = "NUT"
   revision = "88484c5af8505ca5dadc7db1a0cf0cf42e90b5dc"
   version = "v2.0.0"
 
 [[projects]]
+  digest = "1:38ec74012390146c45af1f92d46e5382b50531247929ff3a685d2b2be65155ac"
   name = "github.com/gomodule/redigo"
   packages = [
     "internal",
-    "redis"
+    "redis",
   ]
+  pruneopts = "NUT"
   revision = "9c11da706d9b7902c6da69c592f75637793fe121"
   version = "v2.0.0"
 
 [[projects]]
+  digest = "1:36b55254b3375edfdb1b8249784135c2602699df8cda522cca7a0db11f8cc1c1"
   name = "github.com/google/brotli"
   packages = ["go/cbrotli"]
+  pruneopts = "NUT"
   revision = "b601fe817bd3217cb144bbb380a43cae8e847388"
   version = "v1.0.5"
 
 [[projects]]
   branch = "master"
+  digest = "1:f524f5a04ab8b473961d9cc79fb947b9a91188437abf5a39e333e9a58230435d"
   name = "github.com/lib/pq"
   packages = [
     ".",
-    "oid"
+    "oid",
   ]
+  pruneopts = "NUT"
   revision = "88edab0803230a3898347e77b474f8c1820a1f20"
 
 [[projects]]
+  digest = "1:7d7f26c42c16e66857bcbbb55c5a96139ecaaa3188f2060d372337324aeffb96"
   name = "github.com/tdewolff/minify"
   packages = [
     ".",
     "css",
     "html",
-    "js"
+    "js",
   ]
+  pruneopts = "NUT"
   revision = "222672169d634c440a73abc47685074e1a9daa60"
   version = "v2.3.4"
 
 [[projects]]
+  digest = "1:c8d768cb94de7e9d04665f029ca3e644726fe8f54a7ed61f17bfdd7331ac426a"
   name = "github.com/tdewolff/parse"
   packages = [
     ".",
@@ -98,20 +123,34 @@
     "css",
     "html",
     "js",
-    "strconv"
+    "strconv",
   ]
+  pruneopts = "NUT"
   revision = "639f6272aec6b52094db77b9ec488214b0b4b1a1"
   version = "v2.3.2"
 
 [[projects]]
+  digest = "1:7c95b35057a0ff2e19f707173cc1a947fa43a6eb5c4d300d196ece0334046082"
   name = "gopkg.in/yaml.v2"
   packages = ["."]
+  pruneopts = "NUT"
   revision = "5420a8b6744d3b0345ab293f6fcba19c978f1183"
   version = "v2.2.1"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "a05596cf6981fc2b98895f4ba2fc11eeba3163fa654b7334573e87badae37570"
+  input-imports = [
+    "github.com/acoshift/configfile",
+    "github.com/acoshift/header",
+    "github.com/acoshift/hime",
+    "github.com/acoshift/httprouter",
+    "github.com/acoshift/middleware",
+    "github.com/acoshift/session",
+    "github.com/acoshift/session/store/redis",
+    "github.com/acoshift/webstatic",
+    "github.com/gomodule/redigo/redis",
+    "github.com/lib/pq",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1

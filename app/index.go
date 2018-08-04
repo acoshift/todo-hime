@@ -6,9 +6,11 @@ import (
 	"github.com/acoshift/todo-hime/repository"
 )
 
-func indexGetHandler(ctx *hime.Context) hime.Result {
+func indexGetHandler(ctx *hime.Context) error {
 	list, err := repository.ListTodos(db)
-	must(err)
+	if err != nil {
+		return err
+	}
 
 	p := page(ctx)
 	p["List"] = list

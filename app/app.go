@@ -49,13 +49,13 @@ func New(app *hime.App, c Config) http.Handler {
 	r := httprouter.New()
 	r.HandleMethodNotAllowed = false
 	r.HandleOPTIONS = false
-	r.NotFound = hime.H(notFoundHandler)
+	r.NotFound = hime.Handler(notFoundHandler)
 
-	r.Get(app.Route("index"), hime.H(indexGetHandler))
-	r.Get(app.Route("create"), hime.H(createGetHandler))
-	r.Post(app.Route("create"), hime.H(createPostHandler))
-	r.Post(app.Route("done"), hime.H(donePostHandler))
-	r.Post(app.Route("remove"), hime.H(removePostHandler))
+	r.Get(app.Route("index"), hime.Handler(indexGetHandler))
+	r.Get(app.Route("create"), hime.Handler(createGetHandler))
+	r.Post(app.Route("create"), hime.Handler(createPostHandler))
+	r.Post(app.Route("done"), hime.Handler(donePostHandler))
+	r.Post(app.Route("remove"), hime.Handler(removePostHandler))
 
 	mux.Handle("/", middleware.Chain(
 		session.Middleware(session.Config{
@@ -106,12 +106,6 @@ func panicRecovery(h http.Handler) http.Handler {
 	})
 }
 
-func notFoundHandler(ctx *hime.Context) hime.Result {
+func notFoundHandler(ctx *hime.Context) error {
 	return ctx.RedirectTo("index")
-}
-
-func must(err error) {
-	if err != nil {
-		panic(err)
-	}
 }
