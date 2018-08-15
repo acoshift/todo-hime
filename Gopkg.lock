@@ -2,77 +2,77 @@
 
 
 [[projects]]
-  digest = "1:a090449d6bd19b709af070d04419203fda13cdf8bce493d4a09d402d36fb09e8"
+  branch = "master"
+  digest = "1:6f92558b654df1486a82d34c933440050998c17b8047a99151fafd2c14d6166d"
   name = "github.com/acoshift/configfile"
   packages = [
     ".",
     "internal/reader",
   ]
   pruneopts = "NUT"
-  revision = "203dea81379c18d63418e4b2f97acc03eca7b2b7"
-  version = "v1.2.0"
+  revision = "9f378a548974a8abc39ca9efdc5eca5aa52cb372"
 
 [[projects]]
-  digest = "1:c64498b38799e0267a5a977e36f1469a6868485a7d2e5f19bb5a5d4b56220373"
+  digest = "1:0bedc8f28f0c195fbae9309796cd13a8af030963ea8e1b8faf422cc4f866432f"
   name = "github.com/acoshift/flash"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "d8b6eafa9dff18a17ecebe034b6cba0af4fae5bc"
-  version = "v0.3.1"
+  revision = "56166c1b990d0dcc9f136b86bb963ed7671aee2b"
+  version = "v1.0.0"
 
 [[projects]]
   branch = "master"
-  digest = "1:8cdb8f46c6cc20473c22c97dbeb17b353308b43be64bc984cf7da3c63a00324e"
+  digest = "1:11ad65bb35f7092e1c7b68e13353cca75783724aa8d8d3bda028baaba8e93176"
   name = "github.com/acoshift/header"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "5c88c77f50897ba89140829b44b9d96c5050ff5a"
+  revision = "fbb24d14e0c3216d7c8dec20767dadd2871403fb"
 
 [[projects]]
-  digest = "1:7af636e57398d036e705856fba46947400e08276153e180599e98062b958e8d1"
+  branch = "master"
+  digest = "1:961ac32d4e5eb1c688b09630de1845518695e46e9a3d8d8cfc21cbc2a815213b"
   name = "github.com/acoshift/hime"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "6147c88d94223632c03c844ddafaa6c92eead3aa"
-  version = "v0.8.0"
+  revision = "1ea9977a4811edb97424d6f39bc8e3b64b51527f"
 
 [[projects]]
-  digest = "1:6ebf019b2c57facd2625cf3e3c78733f1de5579b831423c7c170b99dd12bacb4"
+  digest = "1:37c1b3113b6782f06019079c3ab24654e3352b77351e4ce4d880819a5bd2ab3f"
   name = "github.com/acoshift/httprouter"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "fecd5a0a4ef0f46879ac1b1f5286156b2fd8b63b"
-  version = "v2.1.0"
+  revision = "98dda7412f4aee08d0b075996e9eabe265a7cd8d"
+  version = "v2.2.1"
 
 [[projects]]
-  digest = "1:b6b8140f874b7e4f081a8ec2020b7cafab957d8062080230bd865293b5b520aa"
+  branch = "master"
+  digest = "1:8b38f65bb93d3f5cd57b4f403d737b157b182ec0a67edc3bcc8ff88a676976d6"
   name = "github.com/acoshift/middleware"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "3d1c5b32733f1f2cd435fa8fb448c301855f272e"
-  version = "v0.4.1"
+  revision = "278dcbceb879ff24c6f815f0c1cc5281f5ea9c9f"
 
 [[projects]]
-  digest = "1:7cc5867bb7a6509f39adc0538b6af1629f304f140c10c76f5e7cc4f76c55a625"
+  branch = "master"
+  digest = "1:d58a79bbd095ca05765ce3727d4a9d24f0eda716901111e740bfd8ceaae9bd67"
   name = "github.com/acoshift/session"
   packages = [
     ".",
-    "store/redis",
+    "store/redigo",
   ]
   pruneopts = "NUT"
-  revision = "fcedde64c281438580af916e3e09884e17a1495a"
-  version = "v0.9.0"
+  revision = "9d1255bf57048b482210b0296e50a4ca53ab3413"
 
 [[projects]]
-  digest = "1:6ecc2fe5af2865d7bbd38f5c4412a58c1767c54909fe879dd9cb28de32dff91d"
+  branch = "master"
+  digest = "1:307a817a7c003d27fd36a953757ed0641813c4ff917e27cd3115bdedb4cda52d"
   name = "github.com/acoshift/webstatic"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "88484c5af8505ca5dadc7db1a0cf0cf42e90b5dc"
-  version = "v2.0.0"
+  revision = "3c215684dd1f8d6141f2b04ac71b1a080dc27c60"
 
 [[projects]]
-  digest = "1:38ec74012390146c45af1f92d46e5382b50531247929ff3a685d2b2be65155ac"
+  digest = "1:ddf8e2ddc9ad3842eb15d70c60f793d41914a62d2d666171ce0e5ab593637a8f"
   name = "github.com/gomodule/redigo"
   packages = [
     "internal",
@@ -92,17 +92,17 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:f524f5a04ab8b473961d9cc79fb947b9a91188437abf5a39e333e9a58230435d"
+  digest = "1:2c52c3bfa3e106abd7df09126db04bd385aa0f3c250508d8568896253e80cb10"
   name = "github.com/lib/pq"
   packages = [
     ".",
     "oid",
   ]
   pruneopts = "NUT"
-  revision = "88edab0803230a3898347e77b474f8c1820a1f20"
+  revision = "90697d60dd844d5ef6ff15135d0203f65d2f53b8"
 
 [[projects]]
-  digest = "1:7d7f26c42c16e66857bcbbb55c5a96139ecaaa3188f2060d372337324aeffb96"
+  digest = "1:960d2997ec31a1aef52ee7e639a037a6fa7cabcc6857ba326ed4265ffc456124"
   name = "github.com/tdewolff/minify"
   packages = [
     ".",
@@ -111,11 +111,11 @@
     "js",
   ]
   pruneopts = "NUT"
-  revision = "222672169d634c440a73abc47685074e1a9daa60"
-  version = "v2.3.4"
+  revision = "8d72a4127ae33b755e95bffede9b92e396267ce2"
+  version = "v2.3.5"
 
 [[projects]]
-  digest = "1:c8d768cb94de7e9d04665f029ca3e644726fe8f54a7ed61f17bfdd7331ac426a"
+  digest = "1:d3272f10db463acfe1d752a137d7d40ae4506737ee371889d68860f044f8e2d9"
   name = "github.com/tdewolff/parse"
   packages = [
     ".",
@@ -126,8 +126,8 @@
     "strconv",
   ]
   pruneopts = "NUT"
-  revision = "639f6272aec6b52094db77b9ec488214b0b4b1a1"
-  version = "v2.3.2"
+  revision = "d739d6fccb0971177e06352fea02d3552625efb1"
+  version = "v2.3.3"
 
 [[projects]]
   digest = "1:7c95b35057a0ff2e19f707173cc1a947fa43a6eb5c4d300d196ece0334046082"
@@ -147,7 +147,7 @@
     "github.com/acoshift/httprouter",
     "github.com/acoshift/middleware",
     "github.com/acoshift/session",
-    "github.com/acoshift/session/store/redis",
+    "github.com/acoshift/session/store/redigo",
     "github.com/acoshift/webstatic",
     "github.com/gomodule/redigo/redis",
     "github.com/lib/pq",

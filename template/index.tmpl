@@ -1,7 +1,7 @@
 {{define "page.title"}}Index - Todo Hime{{end}}
 
 {{define "content"}}
-{{if .Flash.Success}}
+{{if .Flash.Has "Success"}}
 <div>{{.Flash.Get "Success"}}</div>
 {{end}}
 

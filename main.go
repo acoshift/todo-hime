@@ -7,7 +7,7 @@ import (
 
 	"github.com/acoshift/configfile"
 	"github.com/acoshift/hime"
-	redisstore "github.com/acoshift/session/store/redis"
+	redisstore "github.com/acoshift/session/store/redigo"
 	"github.com/gomodule/redigo/redis"
 	_ "github.com/lib/pq"
 

@@ -5,6 +5,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/acoshift/configfile/internal/reader"
 )
@@ -46,23 +47,26 @@ func (r *Reader) readString(name string) (string, error) {
 }
 
 func (r *Reader) readInt(name string) (int, error) {
-	b, err := r.r.Read(name)
+	s, err := r.readString(name)
 	if err != nil {
 		return 0, err
 	}
-	i, err := strconv.Atoi(string(b))
+	return strconv.Atoi(s)
+}
+
+func (r *Reader) readInt64(name string) (int64, error) {
+	s, err := r.readString(name)
 	if err != nil {
 		return 0, err
 	}
-	return i, nil
+	return strconv.ParseInt(s, 10, 64)
 }
 
 func (r *Reader) readBool(name string) (bool, error) {
-	b, err := r.r.Read(name)
+	s, err := r.readString(name)
 	if err != nil {
 		return false, err
 	}
-	s := string(b)
 	if s == "" {
 		return false, io.EOF
 	}
@@ -73,6 +77,14 @@ func (r *Reader) readBool(name string) (bool, error) {
 		return false, nil
 	}
 	return true, nil
+}
+
+func (r *Reader) readDuration(name string) (time.Duration, error) {
+	s, err := r.readString(name)
+	if err != nil {
+		return 0, err
+	}
+	return time.ParseDuration(s)
 }
 
 // BytesDefault reads bytes from config file with default value
@@ -144,6 +156,29 @@ func (r *Reader) MustInt(name string) int {
 	return i
 }
 
+// Int64Default reads int64 from config file with default value
+func (r *Reader) Int64Default(name string, def int64) int64 {
+	i, err := r.readInt64(name)
+	if err != nil {
+		return def
+	}
+	return i
+}
+
+// Int64 reads int from config file
+func (r *Reader) Int64(name string) int64 {
+	return r.Int64Default(name, 0)
+}
+
+// MustInt64 reads int64 from config file, panic if file not exists or data can not parse to int64
+func (r *Reader) MustInt64(name string) int64 {
+	i, err := r.readInt64(name)
+	if err != nil {
+		panic(err)
+	}
+	return i
+}
+
 // BoolDefault reads bool from config file with default value,
 // result is false if lower case data is "", "0", or "false", otherwise true
 func (r *Reader) BoolDefault(name string, def bool) bool {
@@ -163,6 +198,30 @@ func (r *Reader) Bool(name string) bool {
 // panic if file not exists
 func (r *Reader) MustBool(name string) bool {
 	b, err := r.readBool(name)
+	if err != nil {
+		panic(err)
+	}
+	return b
+}
+
+// DurationDefault reads string then parse as duration from config file with default value
+func (r *Reader) DurationDefault(name string, def time.Duration) time.Duration {
+	d, err := r.readDuration(name)
+	if err != nil {
+		return def
+	}
+	return d
+}
+
+// Duration reads string then parse as duration from config file
+func (r *Reader) Duration(name string) time.Duration {
+	return r.DurationDefault(name, 0)
+}
+
+// MustDuration reads string then parse as duration from config file,
+// panic if file not exists
+func (r *Reader) MustDuration(name string) time.Duration {
+	b, err := r.readDuration(name)
 	if err != nil {
 		panic(err)
 	}

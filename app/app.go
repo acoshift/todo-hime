@@ -27,15 +27,6 @@ func New(app *hime.App, c Config) http.Handler {
 	loc = c.Location
 
 	app.
-		BeforeRender(func(h http.Handler) http.Handler {
-			return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				// clear flash when render view
-				getSession(r.Context()).Flash().Clear()
-
-				w.Header().Set(header.CacheControl, "no-cache, no-store, must-revalidate")
-				h.ServeHTTP(w, r)
-			})
-		}).
 		Routes(hime.Routes{
 			"index":  "/",
 			"create": "/create",
@@ -44,11 +35,14 @@ func New(app *hime.App, c Config) http.Handler {
 		})
 
 	mux := http.NewServeMux()
-	mux.Handle("/-/", http.StripPrefix("/-", webstatic.NewDir("assets")))
+	mux.Handle("/-/", http.StripPrefix("/-", webstatic.New(webstatic.Config{
+		Dir:          "assets",
+		CacheControl: "public, max-age=31536000",
+	})))
 
 	r := httprouter.New()
 	r.HandleMethodNotAllowed = false
-	r.HandleOPTIONS = false
+	r.HandleOptions = false
 	r.NotFound = hime.Handler(notFoundHandler)
 
 	r.Get(app.Route("index"), hime.Handler(indexGetHandler))
@@ -76,9 +70,9 @@ func New(app *hime.App, c Config) http.Handler {
 	)(mux)
 }
 
-func cacheHeader(h http.Handler) http.Handler {
+func defaultCacheControl(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set(header.CacheControl, "public, max-age=31536000")
+		w.Header().Set(header.CacheControl, "no-cache, no-store, must-revalidate")
 		h.ServeHTTP(w, r)
 	})
 }

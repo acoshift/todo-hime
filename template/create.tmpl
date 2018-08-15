@@ -6,9 +6,9 @@
   <input name="content">
   <button>Create</button>
 </form>
-{{if .Flash.Errors}}
+{{if .Flash.Has "Errors"}}
 <ul>
-  {{range .Flash.Errors}}
+  {{range .Flash.Values "Errors"}}
   <li>{{.}}</li>
   {{end}}
 </ul>
