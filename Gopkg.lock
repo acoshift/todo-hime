@@ -30,11 +30,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:961ac32d4e5eb1c688b09630de1845518695e46e9a3d8d8cfc21cbc2a815213b"
+  digest = "1:8f6a24393badfb02299abd9b99f853f442aa4a62f0e10d116b0dc95371564b6d"
   name = "github.com/acoshift/hime"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "1ea9977a4811edb97424d6f39bc8e3b64b51527f"
+  revision = "fea5576baf5df178b7a950dab729d57a26b4e811"
 
 [[projects]]
   digest = "1:37c1b3113b6782f06019079c3ab24654e3352b77351e4ce4d880819a5bd2ab3f"
@@ -54,7 +54,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:d58a79bbd095ca05765ce3727d4a9d24f0eda716901111e740bfd8ceaae9bd67"
+  digest = "1:f1160dad2c9a8a6495b696adcc48f9141de49bc0bb585b0a859d6a821c49ed7a"
   name = "github.com/acoshift/session"
   packages = [
     ".",
@@ -72,7 +72,7 @@
   revision = "3c215684dd1f8d6141f2b04ac71b1a080dc27c60"
 
 [[projects]]
-  digest = "1:ddf8e2ddc9ad3842eb15d70c60f793d41914a62d2d666171ce0e5ab593637a8f"
+  digest = "1:38ec74012390146c45af1f92d46e5382b50531247929ff3a685d2b2be65155ac"
   name = "github.com/gomodule/redigo"
   packages = [
     "internal",
@@ -92,7 +92,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:2c52c3bfa3e106abd7df09126db04bd385aa0f3c250508d8568896253e80cb10"
+  digest = "1:6415011db6d5f89961c38446f3552c74749462bef94904534c55e3dda1affeb9"
   name = "github.com/lib/pq"
   packages = [
     ".",
@@ -102,7 +102,7 @@
   revision = "90697d60dd844d5ef6ff15135d0203f65d2f53b8"
 
 [[projects]]
-  digest = "1:960d2997ec31a1aef52ee7e639a037a6fa7cabcc6857ba326ed4265ffc456124"
+  digest = "1:56d79caf8a7a6f8bdae8d1697403d14d408afd795b37fe9df35991dc8c2dcfcd"
   name = "github.com/tdewolff/minify"
   packages = [
     ".",
@@ -115,7 +115,7 @@
   version = "v2.3.5"
 
 [[projects]]
-  digest = "1:d3272f10db463acfe1d752a137d7d40ae4506737ee371889d68860f044f8e2d9"
+  digest = "1:b715e5f1c083ea33f015e4428c4fc58f2b8f9dfdd06eb0d10b8627931b8e410f"
   name = "github.com/tdewolff/parse"
   packages = [
     ".",
@@ -128,6 +128,22 @@
   pruneopts = "NUT"
   revision = "d739d6fccb0971177e06352fea02d3552625efb1"
   version = "v2.3.3"
+
+[[projects]]
+  branch = "master"
+  digest = "1:76ee51c3f468493aff39dbacc401e8831fbb765104cbf613b89bef01cf4bad70"
+  name = "golang.org/x/net"
+  packages = ["context"]
+  pruneopts = "NUT"
+  revision = "aaf60122140d3fcf75376d319f0554393160eb50"
+
+[[projects]]
+  branch = "master"
+  digest = "1:39ebcc2b11457b703ae9ee2e8cca0f68df21969c6102cb3b705f76cca0ea0239"
+  name = "golang.org/x/sync"
+  packages = ["errgroup"]
+  pruneopts = "NUT"
+  revision = "1d60e4601c6fd243af51cc01ddf169918a5407ca"
 
 [[projects]]
   digest = "1:7c95b35057a0ff2e19f707173cc1a947fa43a6eb5c4d300d196ece0334046082"

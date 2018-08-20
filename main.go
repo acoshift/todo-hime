@@ -43,9 +43,11 @@ func main() {
 		Dir("template").
 		Root("root").
 		Component("_layout.tmpl").
-		Parse("index", "index.tmpl").
-		Parse("create", "create.tmpl").
+		ParseFiles("index", "index.tmpl").
+		ParseFiles("create", "create.tmpl").
 		Minify()
+
+	himeApp.GracefulShutdown()
 
 	err = himeApp.
 		Handler(app.New(himeApp, app.Config{
@@ -54,7 +56,6 @@ func main() {
 			SessionStore: sessionStore,
 		})).
 		Address(":8080").
-		GracefulShutdown().
 		ListenAndServe()
 	if err != nil {
 		log.Fatal(err)
