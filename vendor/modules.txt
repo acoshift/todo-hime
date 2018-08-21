@@ -1,0 +1,44 @@
+# github.com/acoshift/configfile v1.3.0
+github.com/acoshift/configfile
+github.com/acoshift/configfile/internal/reader
+# github.com/acoshift/flash v1.0.0
+github.com/acoshift/flash
+# github.com/acoshift/header v0.0.0-20180524134832-fbb24d14e0c3
+github.com/acoshift/header
+# github.com/acoshift/hime v0.9.0
+github.com/acoshift/hime
+# github.com/acoshift/httprouter v2.2.1+incompatible
+github.com/acoshift/httprouter
+# github.com/acoshift/middleware v0.0.0-20180809074522-278dcbceb879
+github.com/acoshift/middleware
+# github.com/acoshift/session v0.11.0
+github.com/acoshift/session/store/redigo
+github.com/acoshift/session
+# github.com/acoshift/webstatic v2.1.1+incompatible
+github.com/acoshift/webstatic
+# github.com/gomodule/redigo v2.0.0+incompatible
+github.com/gomodule/redigo/redis
+github.com/gomodule/redigo/internal
+# github.com/google/brotli v1.0.5
+github.com/google/brotli/go/cbrotli
+# github.com/lib/pq v0.0.0-20180523175426-90697d60dd84
+github.com/lib/pq
+github.com/lib/pq/oid
+# github.com/tdewolff/minify v2.3.5+incompatible
+github.com/tdewolff/minify
+github.com/tdewolff/minify/css
+github.com/tdewolff/minify/html
+github.com/tdewolff/minify/js
+# github.com/tdewolff/parse v2.3.3+incompatible
+github.com/tdewolff/parse
+github.com/tdewolff/parse/buffer
+github.com/tdewolff/parse/strconv
+github.com/tdewolff/parse/css
+github.com/tdewolff/parse/html
+github.com/tdewolff/parse/js
+# golang.org/x/net v0.0.0-20180821023952-922f4815f713
+golang.org/x/net/context
+# golang.org/x/sync v0.0.0-20180314180146-1d60e4601c6f
+golang.org/x/sync/errgroup
+# gopkg.in/yaml.v2 v2.2.1
+gopkg.in/yaml.v2
