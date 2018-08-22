@@ -3,7 +3,7 @@ module github.com/acoshift/todo-hime
 require (
 	github.com/acoshift/configfile v1.3.0
 	github.com/acoshift/header v0.0.0-20180524134832-fbb24d14e0c3
-	github.com/acoshift/hime v0.9.0
+	github.com/acoshift/hime v0.9.2-0.20180822152134-ef2989ccdd2b
 	github.com/acoshift/httprouter v2.2.1+incompatible
 	github.com/acoshift/middleware v0.0.0-20180809074522-278dcbceb879
 	github.com/acoshift/session v0.11.0
