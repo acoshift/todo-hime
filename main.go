@@ -42,7 +42,7 @@ func main() {
 	himeApp.Template().
 		Dir("template").
 		Root("root").
-		Component("_layout.tmpl").
+		Preload("_layout.tmpl").
 		ParseFiles("index", "index.tmpl").
 		ParseFiles("create", "create.tmpl").
 		Minify()

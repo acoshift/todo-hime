@@ -1,2 +1,2 @@
 dev:
-	goreload -x vendor --all
+	goreload --all

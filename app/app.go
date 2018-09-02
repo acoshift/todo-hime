@@ -56,7 +56,7 @@ func New(app *hime.App, c Config) http.Handler {
 			Rolling:  true,
 			Proxy:    true,
 			Secure:   session.PreferSecure,
-			SameSite: session.SameSiteLax,
+			SameSite: http.SameSiteLaxMode,
 			Path:     "/",
 			HTTPOnly: true,
 			MaxAge:   7 * 24 * time.Hour,
