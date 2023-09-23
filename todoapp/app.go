@@ -9,11 +9,13 @@ import (
 	"github.com/acoshift/webstatic"
 	"github.com/moonrhythm/hime"
 	"github.com/moonrhythm/httpmux"
+
+	"github.com/acoshift/todo-hime/template"
 )
 
 func Mount(m *httpmux.Mux, app *hime.App) http.Handler {
 	t := app.Template()
-	t.Dir("template")
+	t.FS(template.FS)
 	t.Root("root")
 	t.Minify()
 	t.Preload("layout.tmpl")
