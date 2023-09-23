@@ -1,9 +1,9 @@
-package app
+package todoapp
 
 import (
 	"context"
 
-	"github.com/acoshift/session"
+	"github.com/moonrhythm/session"
 )
 
 const (

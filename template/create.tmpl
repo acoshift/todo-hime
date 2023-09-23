@@ -1,19 +1,21 @@
 {{define "page.title"}}Create - Todo Hime{{end}}
 
 {{define "content"}}
-<h3>Create new Todo</h3>
-<form method="POST">
-  <input name="content">
-  <button>Create</button>
-</form>
-{{if .Flash.Has "Errors"}}
-<ul>
-  {{range .Flash.Values "Errors"}}
-  <li>{{.}}</li>
-  {{end}}
-</ul>
-{{end}}
-{{end}}
+	<h3>Create new Todo</h3>
 
-{{define "style"}}{{end}}
-{{define "script"}}{{end}}
+	<a href="{{route "index"}}">Back</a>
+	<br><br>
+
+	<form method="post">
+		<input name="content">
+		<button>Create</button>
+	</form>
+
+    {{if .Flash.Has "Errors"}}
+		<ul>
+            {{range .Flash.Values "Errors"}}
+				<li>{{.}}</li>
+            {{end}}
+		</ul>
+    {{end}}
+{{end}}

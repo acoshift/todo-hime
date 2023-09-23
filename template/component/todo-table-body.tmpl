@@ -1,0 +1,22 @@
+{{range .}}
+	<tr>
+		<td>{{if .Done}}*{{end}}</td>
+		<td>{{.Content}}</td>
+		<td>
+            {{if not .Done}}
+				<form method="POST" action="{{route "done"}}">
+					<input type="hidden" name="id" value="{{.ID}}">
+					<button>Done</button>
+				</form>
+            {{end}}
+			<form method="POST" action="{{route "remove"}}">
+				<input type="hidden" name="id" value="{{.ID}}">
+				<button>Remove</button>
+			</form>
+		</td>
+	</tr>
+{{else}}
+	<tr>
+		<td colspan="3">No Todo</td>
+	</tr>
+{{end}}

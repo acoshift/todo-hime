@@ -1,0 +1,17 @@
+{{define "root"}}
+	<!doctype html>
+
+	<title>{{block "page.title" .}}Todo Hime{{end}}</title>
+
+	<script src="https://cdn.jsdelivr.net/npm/htmx.org@1.9.5/dist/htmx.min.js" defer></script>
+	<script src="https://cdn.jsdelivr.net/npm/pvdbsmf@1.0.0/dist/pvdbsmf.min.js" defer></script>
+
+    {{block "style" .}}{{end}}
+
+	<h1>Todo - Hime</h1>
+	<div>
+        {{template "content" .}}
+	</div>
+
+    {{block "script" .}}{{end}}
+{{end}}

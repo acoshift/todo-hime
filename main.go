@@ -3,60 +3,58 @@ package main
 import (
 	"database/sql"
 	"log"
+	"log/slog"
+	"net/http"
 	"time"
 
 	"github.com/acoshift/configfile"
-	"github.com/acoshift/hime"
-	redisstore "github.com/acoshift/session/store/redigo"
-	"github.com/gomodule/redigo/redis"
+	"github.com/acoshift/pgsql/pgctx"
 	_ "github.com/lib/pq"
+	"github.com/moonrhythm/hime"
+	"github.com/moonrhythm/httpmux"
+	"github.com/moonrhythm/parapet"
+	"github.com/moonrhythm/session"
+	"github.com/moonrhythm/session/store"
 
-	"github.com/acoshift/todo-hime/app"
+	"github.com/acoshift/todo-hime/todoapp"
 )
 
 func main() {
-	config := configfile.NewReader("config")
+	configfile.LoadDotEnv()
+	config := configfile.NewEnvReader()
 
 	db, err := sql.Open("postgres", config.String("sql_db"))
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	loc, err := time.LoadLocation("Asia/Bangkok")
-	if err != nil {
-		log.Fatal(err)
-	}
+	app := hime.New()
+	app.SetServer(parapet.NewBackend()) // optimize config to run behind reverse proxy
+	app.ETag = true
 
-	sessionHost := config.String("session_host")
-	sessionStore := redisstore.New(redisstore.Config{
-		Prefix: config.String("session_prefix"),
-		Pool: &redis.Pool{
-			Dial: func() (redis.Conn, error) {
-				return redis.Dial("tcp", sessionHost)
-			},
-		},
-	})
+	app.Server().UseFunc(session.Middleware(session.Config{
+		Rolling:  true,
+		Proxy:    true,
+		Secure:   session.PreferSecure,
+		SameSite: http.SameSiteLaxMode,
+		Path:     "/",
+		HTTPOnly: true,
+		MaxAge:   7 * 24 * time.Hour,
+		Store: (&store.SQL{
+			DB: db,
+		}).GeneratePostgreSQLStatement("sessions", true),
+	}))
+	app.Server().UseFunc(pgctx.Middleware(db))
 
-	himeApp := hime.New()
+	mux := httpmux.New()
+	todoapp.Mount(mux, app)
 
-	himeApp.Template().
-		Dir("template").
-		Root("root").
-		Preload("_layout.tmpl").
-		ParseFiles("index", "index.tmpl").
-		ParseFiles("create", "create.tmpl").
-		Minify()
+	app.Handler(mux)
+	app.Address(":8080")
 
-	himeApp.GracefulShutdown()
+	slog.Info("starting server at :8080")
 
-	err = himeApp.
-		Handler(app.New(himeApp, app.Config{
-			DB:           db,
-			Location:     loc,
-			SessionStore: sessionStore,
-		})).
-		Address(":8080").
-		ListenAndServe()
+	err = app.ListenAndServe()
 	if err != nil {
 		log.Fatal(err)
 	}
